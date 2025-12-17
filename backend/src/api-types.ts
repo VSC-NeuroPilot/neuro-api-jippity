@@ -236,10 +236,16 @@ export interface ForceActionMessage extends BaseMessage {
          * This defaults to `false`.
          */
         ephemeral_context?: boolean;
+        /**
+         * Priority for action forces
+         */
+        priority?: ActionForcePriority;
         /** The names of the actions that Neuro should choose from. */
         action_names: string[];
     };
 }
+
+export type ActionForcePriority = "low" | "medium" | "high" | "critical"
 
 /** Schema for {@link ForceActionMessage} */
 const ForceActionMessageSchema: JSONSchemaType<ForceActionMessage> = {
@@ -253,6 +259,7 @@ const ForceActionMessageSchema: JSONSchemaType<ForceActionMessage> = {
                 state: { type: "string", nullable: true },
                 query: { type: "string" },
                 ephemeral_context: { type: "boolean", nullable: true },
+                priority: { type: "string", enum: ["low", "medium", "high", "critical"], nullable: true },
                 action_names: { type: "array", items: { type: "string" } }
             },
             required: ["query", "action_names"],
