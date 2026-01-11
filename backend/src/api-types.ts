@@ -245,7 +245,7 @@ export interface ForceActionMessage extends BaseMessage {
     };
 }
 
-export type ActionForcePriority = "low" | "medium" | "high" | "critical"
+export type ActionForcePriority = "low" | "medium" | "high" | "critical";
 
 /** Schema for {@link ForceActionMessage} */
 const ForceActionMessageSchema: JSONSchemaType<ForceActionMessage> = {
