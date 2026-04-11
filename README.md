@@ -1,10 +1,12 @@
 # Jippity
+
 Jippity is a tool for testing game integration with the [Neuro-sama Game API](https://github.com/VedalAI/neuro-game-sdk).
 
 Jippity is designed to be a more "realistic" alternative to [Randy](https://github.com/VedalAI/neuro-game-sdk/tree/main/Randy).
 He accomplishes this by offloading his thinking to OpenAI, as their models are more intelligent and less reliable than a random number generator.
 
 Jippity has the following advantages over Randy:
+
 - he can intelligently choose to take actions without being forced
 - he can choose to not take any actions
 - he can send actions with invalid data
@@ -17,6 +19,7 @@ If you have any problems with Jippity, please create a GitHub issue or message m
 > This project has some jankiness built into it at a foundational level, so please don't expect perfection.
 
 ## Installing and Running Jippity
+
 1. Clone or download this repository
 2. Run `cd backend` to enter the backend directory
 3. Run `npm install` to install dependencies
@@ -27,6 +30,7 @@ If you are contributing to Jippity, please lint and format your code using `npm 
 Jippity sends messages to all connected websockets, so a tool like [Insomnia](https://insomnia.rest/) can be used to see what he's sending if there's a problem with your game.
 
 ## Configuration Using Environment Variables
+
 This tool is configured exclusively with environment variables.
 Environment variables will be loaded from the `.env` file in the backend folder, if present.
 A config file may be added in the future.
@@ -43,10 +47,15 @@ A config file may be added in the future.
 | `JIPPITY_INTERVAL_MS` | The interval in milliseconds before Jippity will say/do something unprompted. Defaults to 10 seconds, has a hard-coded minimum of 1 second.                 | No       | `10000`                                               |
 
 ## Known Issues
+
 - Old messages are not cleared from the AI's "memory", so the context window will eventually fill up, leading to a crash.
   The token limit is currently hard-coded to 2048.
 
+If you are running into any issues, send your log files when opening an issue (located in `(cwd)/jippity-logs`) for help on debugging.
+Ensure that you blank out any sensitive information beforehand.
+
 ## Implementation Details
+
 - Multiple websocket clients (i.e. games) can connect to Jippity at the same time.
   Jippity can receive messages from any client and will send messages to all clients.
   This behavior matches Randy.
