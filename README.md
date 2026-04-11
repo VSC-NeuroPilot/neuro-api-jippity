@@ -60,6 +60,7 @@ Ensure that you blank out any sensitive information beforehand.
   Jippity can receive messages from any client and will send messages to all clients.
   This behavior matches Randy.
 - There is no guarantee that Jippity will respond to an `actions/force` message in a timely manner.
+  - This is the case even if you change the `priority` parameter, which will have no effect.
 - When a forced action has a non-success result, Jippity won't necessarily retry it.
   The specification says that Neuro will immediately retry in this scenario.
 - The `ephemeral_context` property of force action messages is treated as if it was always `false`.
