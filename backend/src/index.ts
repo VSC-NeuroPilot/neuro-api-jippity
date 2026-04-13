@@ -44,6 +44,10 @@ export const SYSTEM_MESSAGE: ChatCompletionMessageParam = {
 // Stores the state of the game and the AI
 const jippityHandler = new JippityHandler();
 
+if (parseInt(process.env.JIPPITY_INTERVAL_MS ?? "10000") < 1000) {
+    log.warn('JIPPITY_INTERVAL_MS is set to a number under 1 second. For the sake of your wallet, this will be adjusted to the 1-second minimum instead.')
+}
+
 // The time in milliseconds between activations of calls to OpenAI
 // Defaults to 10 seconds, enforces a minimum of 1 second for the sake of your wallet
 const jippityIntervalMs = Math.max(
@@ -137,7 +141,7 @@ export function send(message: Message) {
 // }, jippityIntervalMs);
 
 async function main() {
-    const idleTime = 5_000;
+    const idleTime = jippityIntervalMs;
 
     while (jippityHandler.state.id !== "state/exiting") {
         switch (jippityHandler.state.id) {
@@ -179,4 +183,4 @@ async function main() {
     }
 }
 
-main().then(() => log.info("Main function completed"));
+main().then(() => log.info("Main function exited, this should not be the case usually"));
