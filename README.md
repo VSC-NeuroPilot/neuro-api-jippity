@@ -53,6 +53,7 @@ A config file may be added in the future.
 
 If you are running into any issues, send your log files when opening an issue (located in `(cwd)/jippity-logs`) for help on debugging.
 Ensure that you blank out any sensitive information beforehand.
+(You should also add that folder to your gitignores in your Neuro projects)
 
 ## Implementation Details
 
