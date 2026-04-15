@@ -51,6 +51,10 @@ A config file may be added in the future.
 - Old messages are not cleared from the AI's "memory", so the context window will eventually fill up, leading to a crash.
   The token limit is currently hard-coded to 2048.
 
+If you are running into any issues, send your log files when opening an issue (located in `(cwd)/jippity-logs`) for help on debugging.
+Ensure that you blank out any sensitive information beforehand.
+(You should also add that folder to your gitignores in your Neuro projects)
+
 ## Implementation Details
 
 - Multiple websocket clients (i.e. games) can connect to Jippity at the same time.
