@@ -137,7 +137,7 @@ export function send(message: Message) {
 // }, jippityIntervalMs);
 
 async function main() {
-    const idleTime = 5_000;
+    const idleTime = jippityIntervalMs;
 
     while (jippityHandler.state.id !== "state/exiting") {
         switch (jippityHandler.state.id) {
