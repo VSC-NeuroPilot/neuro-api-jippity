@@ -39,6 +39,9 @@ export function convertActionToTool(action: Action): ChatCompletionTool {
     };
 }
 
+export const jippityCharacterId = process.env.JIPPITY_CHARACTER_ID ?? 'jippity'
+export const jippityDisplayName = process.env.JIPPITY_DISPLAY_NAME ?? 'Jippity'
+
 /**
  * Convert a {@link ForceActionMessage} into an appropriate representation as a {@link ChatCompletionUserMessageParam}.
  *

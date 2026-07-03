@@ -21,6 +21,7 @@ const ajv = new Ajv();
  */
 export type Message =
     | StartupMessage
+    | StartupAcknowledgementMessage
     | ContextMessage
     | RegisterActionsMessage
     | UnregisterActionsMessage
@@ -68,6 +69,21 @@ interface BaseMessage {
 export interface StartupMessage extends BaseMessage {
     command: "startup";
     game: string;
+}
+
+/**
+ * This message is sent in response to a new game connection.
+ * @see https://github.com/VedalAI/neuro-sdk/blob/main/API/SPECIFICATION.md#startup-acknowledgement
+ */
+export interface StartupAcknowledgementMessage extends BaseMessage {
+    command: "startup";
+    data: {
+        session: {
+            sessionId: string;
+            characterId: string;
+            displayName: string;
+        };
+    };
 }
 
 /** Schema for {@link StartupMessage} */

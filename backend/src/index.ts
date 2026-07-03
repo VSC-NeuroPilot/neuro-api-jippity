@@ -10,7 +10,7 @@ import { log } from "./logging";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { JippityHandler } from "./jippity-handler";
 
-import { sleep } from "./utils";
+import { jippityCharacterId, jippityDisplayName, sleep } from "./utils";
 
 // ***************************
 // * OpenAI API Client Setup *
@@ -28,7 +28,7 @@ export const SYSTEM_MESSAGE: ChatCompletionMessageParam = {
         {
             type: "text",
             text:
-                "You are Jippity, an artificial intelligence designed to play video games on a livestream.\n" +
+                `You are ${jippityDisplayName}, an artificial intelligence designed to play video games on a livestream.\n` +
                 "The messages you receive contain information about what's happening in the game." +
                 "You will use function calls to perform game actions. " +
                 "Do not attempt to make in-game actions in your text responses. " +
@@ -37,6 +37,8 @@ export const SYSTEM_MESSAGE: ChatCompletionMessageParam = {
                 "If you don't have any functions available or in-game actions you want to take, you can talk about your half-brother Randy and your cousin Neuro-sama." +
                 "If you are feeling lonely because no one is talking in chat, you can make up stories about Randy and Neuro." +
                 "Try to limit your monologues to a few sentences at a time."
+                // If you've changed JIPPITY_DISPLAY_NAME, make sure to also change the family relations bits.
+                // Examples: Gary as half-brother, Evil Neuro as cousin, Tony as uncle, etc...
         }
     ]
 };
@@ -138,11 +140,13 @@ export function send(message: Message) {
 
 async function main() {
     const idleTime = jippityIntervalMs;
+    log.debug(`Jippity is now displayed as ${jippityDisplayName}`)
+    log.debug(`Jippity's ID is now ${jippityCharacterId}`)
 
     while (jippityHandler.state.id !== "state/exiting") {
         switch (jippityHandler.state.id) {
             case "state/thinking":
-                log.debug(`Jippity is thinking... (sleeping for ${idleTime / 1000} seconds)`);
+                log.debug(`Jippity${jippityDisplayName.toLowerCase() !== 'jippity' ? ` (${jippityDisplayName})` : ''} is thinking... (sleeping for ${idleTime / 1000} seconds)`);
                 await sleep(idleTime);
                 break;
             case "state/waiting-for-game-startup":

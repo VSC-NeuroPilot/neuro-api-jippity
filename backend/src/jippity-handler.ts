@@ -11,8 +11,9 @@ import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { openai, openaiModel, send, SYSTEM_MESSAGE } from "./index";
 import { log } from "./logging";
 import assert from "node:assert";
+import crypto from 'node:crypto';
 
-import { convertActionToTool, convertForcedActionMessageToOpenAIMessage } from "./utils";
+import { convertActionToTool, convertForcedActionMessageToOpenAIMessage, jippityCharacterId, jippityDisplayName } from "./utils";
 import { Queue } from "./queue";
 import { State } from "./jippity-types";
 import { ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/chat/completions";
@@ -90,7 +91,7 @@ export class JippityHandler {
                         content,
                         "Surely there would be content if the model stopped on its own"
                     );
-                    log.info(`Jippity says: ${content}`);
+                    log.info(`Jippity${jippityDisplayName.toLowerCase() !== 'jippity' ? ` (${jippityDisplayName})` : ''} says: ${content}`);
                     // this.openaiRequestInProgress = false;
                     this.state = { id: "state/idle" };
                     return;
@@ -127,7 +128,7 @@ export class JippityHandler {
                     } else {
                         this.state = { id: "state/pending-action", action: action };
                     }
-                    log.info(`Jippity wants to do the following action: ${JSON.stringify(action)}`);
+                    log.info(`Jippity${jippityDisplayName.toLowerCase() !== 'jippity' ? ` (${jippityDisplayName})` : ''} wants to do the following action: ${JSON.stringify(action)}`);
                     this.openaiMessages.push(choice.message);
                     send(action);
                     return;
@@ -204,17 +205,21 @@ export class JippityHandler {
         }
 
         switch (message.command) {
-            case "startup":
+            case "startup": {
                 this.state = { id: "state/idle" };
+                assert('game' in message, 'Wrong type of startup message sent by the client!')
                 this.game = message.game;
                 this.actions = [];
-                log.info(`Set game to "${message.game}" and cleared all registered actions`);
+                const uuid = crypto.randomUUID();
+                log.info(`Set game to "${message.game}" and cleared all registered actions (session ID ${uuid})`);
                 this.openaiMessages.push({
                     role: "user",
                     content: `You are now playing ${message.game}`
                 } as ChatCompletionMessageParam);
+                send({ command: 'startup', data: { session: { sessionId: uuid, characterId: jippityCharacterId, displayName: jippityDisplayName } } })
                 this.callOpenAI();
                 return true;
+            }
             case "actions/register":
                 this.registerActions(message.data.actions);
                 return true;

@@ -45,6 +45,8 @@ A config file may be added in the future.
 | `WSS_PORT`            | The port the websocket server will listen on. Defaults to `8000`.                                                                                           | No       | `8000`                                                |
 | `LOG_LEVEL`           | The level of logs to display. The options are `error`, `warn`, `info`, and `debug`. Defaults to `info`.                                                     | No       | `info`                                                |
 | `JIPPITY_INTERVAL_MS` | The interval in milliseconds before Jippity will say/do something unprompted. Defaults to 10 seconds, has a hard-coded minimum of 1 second.                 | No       | `10000`                                               |
+| `JIPPITY_CHARACTER_ID` | The character ID to pass to connected games. | No | `jippity` |
+| `JIPPITY_DISPLAY_NAME` | The display name to pass to connected games. Will also be reflected in logs. WARNING: If you change this value, remember to change the system prompt for Jippity! | No | `Jippity` |
 
 ## Known Issues
 
